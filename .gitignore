@@ -1,0 +1,23 @@
+.vs
+obj
+bin
+*.bak
+
+# iris license
+iris.key
+
+# iris durable data
+irisdata/*
+
+# ssl certs
+ssl-cert.*
+*.pem
+
+# webserver
+webserver/webgateway/CSP.log
+
+# local ignored files
+local/*
+
+# data files
+*.tar.gz
