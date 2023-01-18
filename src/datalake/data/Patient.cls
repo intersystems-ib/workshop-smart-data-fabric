@@ -1,4 +1,4 @@
-Class datalake.model.Patient Extends (%Persistent, %JSON.Adaptor)
+Class datalake.data.Patient Extends %Persistent
 {
 
 /// TODO: PK on Identifier
@@ -36,11 +36,11 @@ Storage Default
 <Value>BirthDate</Value>
 </Value>
 </Data>
-<DataLocation>^datalake.model.PatientD</DataLocation>
+<DataLocation>^datalake.data.PatientD</DataLocation>
 <DefaultData>PatientDefaultData</DefaultData>
-<IdLocation>^datalake.model.PatientD</IdLocation>
-<IndexLocation>^datalake.model.PatientI</IndexLocation>
-<StreamLocation>^datalake.model.PatientS</StreamLocation>
+<IdLocation>^datalake.data.PatientD</IdLocation>
+<IndexLocation>^datalake.data.PatientI</IndexLocation>
+<StreamLocation>^datalake.data.PatientS</StreamLocation>
 <Type>%Storage.Persistent</Type>
 }
 
