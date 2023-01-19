@@ -19,5 +19,5 @@ webserver/webgateway/CSP.log
 # local ignored files
 local/*
 
-# data files
-*.tar.gz
+# generated hl7 files
+data/hl7files/*.hl7
