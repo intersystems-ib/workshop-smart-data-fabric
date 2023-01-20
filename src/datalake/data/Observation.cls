@@ -11,29 +11,19 @@ Property Units As %String;
 
 Property Value As %String;
 
+Property TimeStamp As %TimeStamp;
+
 /// referenced Patient
 Relationship Patient As Patient [ Cardinality = one, Inverse = Observations ];
 
-ClassMethod GetByIdentifier(identifier As %String, Output obj As Observation) As %Status
+Method %OnNew(code, status, units, value, timestamp) As %Status [ Private, ServerOnly = 1 ]
 {
-	set ret = $$$OK
-	try {
-		set obj="", objId=""
-
-		set sql = "select %id from datalake_data.Observation where Identifier=?"
-		set statement = ##class(%SQL.Statement).%New()
-		$$$ThrowOnError(statement.%Prepare(sql))
-
-		set result = statement.%Execute(identifier)
-		if result.%Next() {
-			set objId = result.%GetData(1)
-			set obj = ..%OpenId(objId)
-		}
-		
-	} catch ex {
-		set ret = ex.AsStatus()
-	}
-	quit ret
+	set ..Code = code
+	set ..Status = status
+	set ..Units = units
+	set ..Value = value
+	set ..TimeStamp = timestamp
+	quit $$$OK
 }
 
 Index PatientIdx On Patient;
@@ -60,6 +50,9 @@ Storage Default
 <Value>Value</Value>
 </Value>
 <Value name="7">
+<Value>TimeStamp</Value>
+</Value>
+<Value name="8">
 <Value>Patient</Value>
 </Value>
 </Data>

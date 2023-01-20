@@ -17,17 +17,9 @@ Property AdministrativeSex As %String;
 
 Property SSN As %String;
 
-Property SystolicBP As %String;
+Property ObxValues As %ArrayOfDataTypes;
 
-Property DiastolicBP As %String;
-
-Property BS As %String;
-
-Property BodyTemp As %String;
-
-Property HeartRate As %String;
-
-Property RiskLevel As %String;
+Property ObxUnits As %ArrayOfDataTypes;
 
 /// Serialize to json
 Method Serialize(Output stream) As %Status
@@ -149,7 +141,6 @@ Method RunOperation(Output errorList As %List, Output log As %Stream.Object, bOp
         set patientObj.BirthDate = ..DOB
         
         // observations
-        
 
         $$$ThrowOnError(patientObj.%Save(1))
 

@@ -21,32 +21,38 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <foreach property='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp()}' key='k1' >
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="SYSTOLIC_BLOODPRESSURE"' >
 <true>
-<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.SystolicBP' action='set' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"SystolicBP"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"SystolicBP"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="DIASTOLIC_BLOODPRESSURE"' >
 <true>
-<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.DiastolicBP' action='set' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"DiastolicBP"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"DiastolicBP"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="BLOOD_GLUCOSE"' >
 <true>
-<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.BS' action='set' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"BloodGlucose"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"BloodGlucose"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="BODY_TEMP"' >
 <true>
-<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.BodyTemp' action='set' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"BodyTemp"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"BodyTemp"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="HEART_RATE"' >
 <true>
-<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.HeartRate' action='set' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"HeartRate"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"HeartRate"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="RISK_LEVEL"' >
 <true>
-<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.RiskLevel' action='set' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"RiskLevel"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"RiskLevel"' />
 </true>
 </if>
 </foreach>
