@@ -136,20 +136,25 @@ Method RunOperation(Output errorList As %List, Output log As %Stream.Object, bOp
         TSTART
         $$$AddLog(log, "Transaction Started")
 
-        // TODO: CreatePatient()
-        // TODO: CreateObservation()
+        // patient
+        $$$ThrowOnError(##class(datalake.data.Patient).GetByIdentifier(..PatientId, .patientObj))
+        if '$isobject(patientObj) {
+            $$$AddLog(log, "Patient "_..PatientId_" does not exist. Creating patient")
+            set patientObj = ##class(datalake.data.Patient).%New()
+        }
+        set patientObj.Identifier = ..PatientId
+        set patientObj.FirstName = ..Name
+        set patientObj.AdministrativeSex = ..AdministrativeSex
+        set patientObj.LastName = ..Surname1
+        set patientObj.BirthDate = ..DOB
+        
+        // observations
+        
+
+        $$$ThrowOnError(patientObj.%Save(1))
 
         TCOMMIT
         $$$AddLog(log, "Transaction Commited")
-
-        /*
-        // you can send messages to other production components (while you are not on an open transaction)
-        if $isobject(bOperation) {
-            set dummyMsg = ##class(Ens.StringContainer).%New()
-            set dummyMsg.StringValue = "Call production component during RunOperation() "
-            $$$ThrowOnError(bOperation.SendRequestAsync("Dummy", dummyMsg))
-        }
-        */
 
     } catch ex {
         TROLLBACK 

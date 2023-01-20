@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ApplicationsExport>
+  <Applications>
+    <AutheEnabled>36</AutheEnabled>
+    <AutoCompile>false</AutoCompile>
+    <CookiePath>/csp/dpipe/</CookiePath>
+    <CSPZENEnabled>true</CSPZENEnabled>
+    <CSRFToken>false</CSRFToken>
+    <DeepSeeEnabled>false</DeepSeeEnabled>
+    <Description>Interoperability Management Portal</Description>
+    <Enabled>true</Enabled>
+    <GroupById>%ISCMgtPortal</GroupById>
+    <HyperEvent>0</HyperEvent>
+    <iKnowEnabled>false</iKnowEnabled>
+    <InbndWebServicesEnabled>true</InbndWebServicesEnabled>
+    <IsNameSpaceDefault>false</IsNameSpaceDefault>
+    <JWTAuthEnabled>false</JWTAuthEnabled>
+    <JWTAccessTokenTimeout>60</JWTAccessTokenTimeout>
+    <JWTRefreshTokenTimeout>900</JWTRefreshTokenTimeout>
+    <LockCSPName>true</LockCSPName>
+    <Name>/csp/dpipe</Name>
+    <NameSpace>DATALAKE</NameSpace>
+    <Path>/usr/irissys/csp/datalake</Path>
+    <Recurse>true</Recurse>
+    <RedirectEmptyPath>false</RedirectEmptyPath>
+    <Resource>%Ens_Portal</Resource>
+    <ServeFiles>2</ServeFiles>
+    <ServeFilesTimeout>3600</ServeFilesTimeout>
+    <Timeout>900</Timeout>
+    <TwoFactorEnabled>false</TwoFactorEnabled>
+    <Type>2</Type>
+    <UseCookies>2</UseCookies>
+    <SessionScope>2</SessionScope>
+    <UserCookieScope>2</UserCookieScope>
+    <Version>2</Version>
+  </Applications>
+</ApplicationsExport>

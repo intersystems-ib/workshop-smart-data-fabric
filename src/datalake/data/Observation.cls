@@ -14,6 +14,28 @@ Property Value As %String;
 /// referenced Patient
 Relationship Patient As Patient [ Cardinality = one, Inverse = Observations ];
 
+ClassMethod GetByIdentifier(identifier As %String, Output obj As Observation) As %Status
+{
+	set ret = $$$OK
+	try {
+		set obj="", objId=""
+
+		set sql = "select %id from datalake_data.Observation where Identifier=?"
+		set statement = ##class(%SQL.Statement).%New()
+		$$$ThrowOnError(statement.%Prepare(sql))
+
+		set result = statement.%Execute(identifier)
+		if result.%Next() {
+			set objId = result.%GetData(1)
+			set obj = ..%OpenId(objId)
+		}
+		
+	} catch ex {
+		set ret = ex.AsStatus()
+	}
+	quit ret
+}
+
 Index PatientIdx On Patient;
 
 Storage Default

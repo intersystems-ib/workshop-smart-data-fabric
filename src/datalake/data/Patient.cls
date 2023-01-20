@@ -1,18 +1,41 @@
 Class datalake.data.Patient Extends %Persistent
 {
 
-/// TODO: PK on Identifier
-Property Identifier As %String;
+Property Identifier As %String [ Required ];
 
 Property FirstName As %String(MAXLEN = 250);
 
 Property LastName As %String(MAXLEN = 500);
 
-Property Sex As %String;
+Property AdministrativeSex As %String(VALUELIST = ",M,F");
 
 Property BirthDate As %Date;
 
 Relationship Observations As Observation [ Cardinality = many, Inverse = Patient ];
+
+Index IdentifierIdx On Identifier [ Unique ];
+
+ClassMethod GetByIdentifier(identifier As %String, Output obj As Patient) As %Status
+{
+	set ret = $$$OK
+	try {
+		set obj="", patientId=""
+
+		set sql = "select %id from datalake_data.Patient where Identifier=?"
+		set statement = ##class(%SQL.Statement).%New()
+		$$$ThrowOnError(statement.%Prepare(sql))
+
+		set result = statement.%Execute(identifier)
+		if result.%Next() {
+			set patientId = result.%GetData(1)
+			set obj = ..%OpenId(patientId)
+		}
+		
+	} catch ex {
+		set ret = ex.AsStatus()
+	}
+	quit ret
+}
 
 Storage Default
 {
@@ -30,7 +53,7 @@ Storage Default
 <Value>LastName</Value>
 </Value>
 <Value name="5">
-<Value>Sex</Value>
+<Value>AdministrativeSex</Value>
 </Value>
 <Value name="6">
 <Value>BirthDate</Value>

@@ -22,9 +22,21 @@
     set vars("SourcePath")="/tmp/iris-datapipe-master/src"
     set vars("StartTestProduction")="no"
     set sc = ##class(DataPipe.Installer).Run(.vars)
+
     
-    // --- load your source code
+    // --- datalake
+
+    // import web application configurations
+    set $namespace = "%SYS"
+    write ##class(Security.Applications).Import("/opt/irisapp/install/webapp-dpipe.xml")
+    
+    // load & compile source code
     set $namespace = "DATALAKE"
     set sc = $SYSTEM.OBJ.LoadDir("/opt/irisapp/src", "ck", .errorlog, 1)
 
+    // auto start datalake interop production
+    set production = "datalake.connectors.interop.Production"
+    set ^Ens.Configuration("csp","LastProduction") = production
+    do ##class(Ens.Director).SetAutoStart(production)
+  
     halt
