@@ -141,7 +141,17 @@ Method RunOperation(Output errorList As %List, Output log As %Stream.Object, bOp
         set patientObj.BirthDate = ..DOB
         
         // observations
-
+        set obxCode=""
+        for  {
+            set obxValue = ..ObxValues.GetNext(.obxCode) 
+            quit:obxCode="" 
+            set obxUnits = ..ObxUnits.GetAt(obxCode) 
+            set obxObj = ##class(datalake.data.Observation).%New()
+            set obxObj.Code = obxCode
+            set obxObj.Status = "F"
+            set obxObj.Units = obxUnits
+            do patientObj.Observations.Insert(obxObj)
+        }
         $$$ThrowOnError(patientObj.%Save(1))
 
         TCOMMIT

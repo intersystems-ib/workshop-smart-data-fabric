@@ -16,16 +16,6 @@ Property TimeStamp As %TimeStamp;
 /// referenced Patient
 Relationship Patient As Patient [ Cardinality = one, Inverse = Observations ];
 
-Method %OnNew(code, status, units, value, timestamp) As %Status [ Private, ServerOnly = 1 ]
-{
-	set ..Code = code
-	set ..Status = status
-	set ..Units = units
-	set ..Value = value
-	set ..TimeStamp = timestamp
-	quit $$$OK
-}
-
 Index PatientIdx On Patient;
 
 Storage Default
