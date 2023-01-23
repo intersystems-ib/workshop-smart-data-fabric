@@ -1,5 +1,7 @@
 Learn the main ideas involved in developing a DataLake using InterSystems IRIS.
 
+<img src="img/datalake.png" width="900px"/>
+
 # Learn the basics
 👉 We will combine different features of InterSystems IRIS such as multi-model database, interoperability and analytics.
 
@@ -89,4 +91,22 @@ Patient->FirstName, Patient->LastName,Code, Units, Value
 FROM datalake_data.Observation
 ```
 
+
+# Ingestion
+
+## Data
+* In our example, we are going to use a set of HL7 files that have been generated inspired on [Maternal Health Risk Data](https://www.kaggle.com/datasets/csafrit2/maternal-health-risk-data) dataset on Kaggle. These files will be ingested as they were incoming from an external hospital.
+* Uncompress (data/hl7files.tar.gz)[data/hl7files.tar.gz].
+
+## DataPipe and DataPipeUI
+* You could implement data ingestion in a lot of different ways. In this example, we will be using a community tool called [DataPipe](https://github.com/intersystems-ib/iris-datapipe) that is already installed in the environment. 
+* This will help us on enriching, normalizing and validating the incoming data using InterSystems IRIS interoperability features. 
+* Also you can use an user interface [DataPipeUI](https://github.com/intersystems-ib/iris-datapipeUI) to have a look at the incoming data to the system and how it's being handled.
+* In a separate terminal in your system, clone the repo and run the [DataPipeUI](https://github.com/intersystems-ib/iris-datapipeUI) container user interface:
+
+```
+git clone https://github.com/intersystems-ib/iris-datapipeUI
+cd iris-datapipeUI
+docker-compose up -d
+```
 
