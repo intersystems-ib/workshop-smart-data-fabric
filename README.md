@@ -1,6 +1,6 @@
 Learn the main ideas involved in developing a DataLake using InterSystems IRIS.
 
-<img src="img/datalake.png" width="900px"/>
+<img src="img/datalake.png" width="1500px"/>
 
 # Learn the basics
 👉 We will combine different features of InterSystems IRIS such as multi-model database, interoperability and analytics.
@@ -32,7 +32,7 @@ docker-compose build
 # Environment
 We are going to use an environment using Docker containers. 
 
-<img src="img/docker-environment.png" width="500px" />
+<img src="img/docker-environment.png" width="800px" />
 
 * [docker-compose](docker-compose.yml) - set up the containers (services) we are using. In this case, we are using only an InterSystems IRIS container.
 * [Dockerfile](Dockerfile) - this file defines how we are building our InterSystems IRIS Container. We will start from an InterSystems IRIS For Health Community version, copy some directories, set up some permissions and finally call iris.script to run whatever we need within IRIS.
@@ -53,7 +53,7 @@ These classes also use [Relationships](https://docs.intersystems.com/irisforheal
 
 Go to [System Explorer > SQL (DATALAKE)](http://localhost:52773/csp/sys/%25CSP.Portal.Home.zen?$NAMESPACE=DATALAKE&$NAMESPACE=DATALAKE&#), locate the tables corresponding to our persistent classes and display them. They should be empty.
 
-<img src="img/sql-explorer-empty.gif" width="800px"/>
+<img src="img/sql-explorer-empty.gif" width="1024px"/>
 
 We manipulate data using SQL or Objects. Let's create some simple data using objects through the [WebTerminal](http://localhost:52773/terminal/)
 
