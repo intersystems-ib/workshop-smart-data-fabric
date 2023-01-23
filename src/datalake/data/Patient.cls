@@ -1,5 +1,7 @@
-Class datalake.data.Patient Extends %Persistent
+Class datalake.data.Patient Extends (%Persistent, %JSON.Adaptor)
 {
+
+Property Id As %String(%JSONINCLUDE = "OUTPUTONLY") [ Calculated ];
 
 Property Identifier As %String [ Required ];
 
@@ -14,6 +16,11 @@ Property BirthDate As %Date;
 Relationship Observations As Observation [ Cardinality = many, Inverse = Patient ];
 
 Index IdentifierIdx On Identifier [ Unique ];
+
+Method IdGet() As %String
+{
+	quit ..%Id()
+}
 
 ClassMethod GetByIdentifier(identifier As %String, Output obj As Patient) As %Status
 {

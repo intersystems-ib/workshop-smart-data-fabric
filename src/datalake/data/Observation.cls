@@ -1,5 +1,7 @@
-Class datalake.data.Observation Extends %Persistent
+Class datalake.data.Observation Extends (%Persistent, %JSON.Adaptor)
 {
+
+Property Id As %String(%JSONINCLUDE = "OUTPUTONLY") [ Calculated ];
 
 Property Identifier As %String;
 
@@ -17,6 +19,11 @@ Property TimeStamp As %TimeStamp;
 Relationship Patient As Patient [ Cardinality = one, Inverse = Observations ];
 
 Index PatientIdx On Patient;
+
+Method IdGet() As %String
+{
+	quit ..%Id()
+}
 
 Storage Default
 {

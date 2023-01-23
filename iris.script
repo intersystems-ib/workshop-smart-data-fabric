@@ -26,9 +26,10 @@
     
     // --- datalake
 
-    // import web application configurations
+    // import web applications
     set $namespace = "%SYS"
     write ##class(Security.Applications).Import("/opt/irisapp/install/webapp-dpipe.xml")
+    write ##class(Security.Applications).Import("/opt/irisapp/install/webapp-datalake-api.xml")
     
     set $namespace = "DATALAKE"
 
