@@ -15,6 +15,9 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='(source.ObxValues.GetAt("BodyTemp")-32)*(5/9)' property='target.ObxValues' action='set' key='"BodyTemp"' >
 <annotation>Normalize Fahrenheit to Celsius</annotation>
 </assign>
+<assign value='"C"' property='target.ObxUnits' action='set' key='"BodyTemp"' >
+<annotation>Normalize Fahrenheit to Celsius</annotation>
+</assign>
 </true>
 </if>
 </transform>

@@ -42,6 +42,16 @@ docker-compose
 Dockerfile
 iris.script
 
+After running the environment, you can access to an interactive sesion on IRIS container using:
+```
+docker-compose exec -it iris bash
+```
+
+You can also have a look at the container logs using:
+```
+docker logs iris
+```
+
 # Data model
 Have a look at the main classes of our data model:
 * [Patient](src/datalake/data/Patient.cls) will store patient definitions
@@ -91,12 +101,23 @@ Patient->FirstName, Patient->LastName,Code, Units, Value
 FROM datalake_data.Observation
 ```
 
+After your tests, delete all the data you have just created:
+
+```objectscript
+    write ##class(datalake.data.Observation).%KillExtent()
+    write ##class(datalake.data.Patient).%KillExtent()
+``` 
 
 # Ingestion
 
 ## Data
 * In our example, we are going to use a set of HL7 files that have been generated inspired on [Maternal Health Risk Data](https://www.kaggle.com/datasets/csafrit2/maternal-health-risk-data) dataset on Kaggle. These files will be ingested as they were incoming from an external hospital.
-* Uncompress (data/hl7files.tar.gz)[data/hl7files.tar.gz].
+* Uncompress [data/hl7files.tar.gz](data/hl7files.tar.gz).
+
+```
+cd data
+tar -zxvf hl7files.tar.gz
+```
 
 ## DataPipe and DataPipeUI
 * You could implement data ingestion in a lot of different ways. In this example, we will be using a community tool called [DataPipe](https://github.com/intersystems-ib/iris-datapipe) that is already installed in the environment. 
@@ -109,4 +130,33 @@ git clone https://github.com/intersystems-ib/iris-datapipeUI
 cd iris-datapipeUI
 docker-compose up -d
 ```
+
+## Try ingesting some data yourself
+* In the environment, open the [production](http://localhost:52773/csp/datalake/EnsPortal.ProductionConfig.zen?PRODUCTION=datalake.connectors.interop.Production). It is already running.
+* Let's ingest some data.
+* Copy some files from [data/hl7files](data/hl7files) into [data/hl7in](data/hl7in).
+* You can have a look at the [HL7 messages processed](http://localhost:52773/csp/datalake/EnsPortal.MessageViewer.zen?SOURCEORTARGET=HL7%20In) in the production.
+* Access http://localhost:8080 to have a glance at the DataPipeUI
+* After processing data, run some SQL queries again.
+
+<img src="img/hl7-ingestion-datapipe.gif" width="1024px" />
+
+## DataPipe Model
+DataPipe allows you to define an interoperability model with the properties that you need, and then decide how are you going to normalize and validate it. You have to implement a few methods.
+
+<img src="img/datapipe-abstract-model.png" width="200px" />
+
+In this case, we are using [R01Model.cls](src/datalake/connectors/interop/datapipe/model/R01Model.cls):
+* It defines the properties we need for processing incoming ORU^R01 HL7 messages with observations.
+* Implements `Serialize` and `Deserialize` methods to serialize and deserialize using JSON format.
+* To `Normalize`, it calls [R01Normalize](http://localhost:52773/csp/datalake/EnsPortal.DTLEditor.zen?DT=datalake.connectors.interop.datapipe.dt.R01Normalize.dtl) data transformation.
+* To `Validate`, implements some checks on the incoming data.
+* Finally, in `RunOperation` implements what are we going to do with the ingested data. In this example it is storing data in `datalake.data.*` classes.
+
+## DataPipe Production
+* The [production](http://localhost:52773/csp/datalake/EnsPortal.ProductionConfig.zen?PRODUCTION=datalake.connectors.interop.Production) that is ingesting data, have some elements you should review:
+* `HL7 In` - built-in HL7 file Business Service that reads HL7 files from a directory.
+* [HL7 Ingestion](http://localhost:52773/csp/datalake/EnsPortal.BPLEditor.zen?BP=datalake.connectors.interop.datapipe.bp.HL7Ingestion.bpl) - Business Process that: 
+  * Extract attributes (metadata) from incoming HL7 message using [R01ToInboxAttributes](http://localhost:52773/csp/datalake/EnsPortal.DTLEditor.zen?DT=datalake.connectors.interop.datapipe.dt.R01ToInboxAttributes.dtl) data transform.
+  * Converts incoming HL7 message into [datalake.connectors.interop.datapipe.model.R01Model.cls](src/datalake/connectors/interop/datapipe/model/R01Model.cls) using [R01ToModel](http://localhost:52773/csp/datalake/EnsPortal.DTLEditor.zen?DT=datalake.connectors.interop.datapipe.dt.R01ToModel.dtl) data transform.
 
