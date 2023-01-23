@@ -27,9 +27,66 @@ Build the image we will use during the workshop:
 docker-compose build
 ```
 
+# Environment
+We are going to use an environment using Docker containers. 
+
+<img src="img/docker-environment.png" width="500px" />
+
+* [docker-compose](docker-compose.yml) - set up the containers (services) we are using. In this case, we are using only an InterSystems IRIS container.
+* [Dockerfile](Dockerfile) - this file defines how we are building our InterSystems IRIS Container. We will start from an InterSystems IRIS For Health Community version, copy some directories, set up some permissions and finally call iris.script to run whatever we need within IRIS.
+* [iris.script](iris.script) - script that runs the setup we need in IRIS, e.g. installing applications, loading source code, etc.
+
+docker-compose
+Dockerfile
+iris.script
+
 # Data model
+Have a look at the main classes of our data model:
+* [Patient](src/datalake/data/Patient.cls) will store patient definitions
+* [Observation](src/datalake/data/Observation.cls) will store different kind of observations for the patients (e.g. diastolic bp, systolic bp, body temperature, etc.)
+
+Our classes are [persistent](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GOBJ_persobj_intro). That means that they can store data, and in InterSystems IRIS we will be able to work with them using objects as well as SQL automatically.
+
+These classes also use [Relationships](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GOBJ_relationships) and some [Indexes](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GOBJ_relationships). They can also contain methods and logic.
+
+Go to [System Explorer > SQL (DATALAKE)](http://localhost:52773/csp/sys/%25CSP.Portal.Home.zen?$NAMESPACE=DATALAKE&$NAMESPACE=DATALAKE&#), locate the tables corresponding to our persistent classes and display them. They should be empty.
+
+<img src="img/sql-explorer-empty.gif" width="800px"/>
+
+We manipulate data using SQL or Objects. Let's create some simple data using objects through the [WebTerminal](http://localhost:52773/terminal/)
+
+First, create a patient object:
+
+```objectscript
+    set patientObj = ##class(datalake.data.Patient).%New()
+    set patientObj.Identifier = "12345"
+    set patientObj.FirstName = "John"
+    set patientObj.LastName = "Doe"
 ```
 
+Then, create an observation for the patient:
+
+```objectscript
+    set obxObj = ##class(datalake.data.Observation).%New()
+    set obxObj.Code = "BodyTemp"
+    set obxObj.Value = "36"
+    set obxObj.Units = "C"
+```
+
+Finally, insert the observation into the patient record and save it
+
+```objectscript
+    do patientObj.Observations.Insert(obxObj)
+    set sc = patientObj.%Save(1)
+    write !,"statusCode=",sc
+```
+
+After that, try to run SQL queries again. You can also take advantage of [Implicit Joins (Arrow Syntax)](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GSQL_implicitjoins):
+
+```sql
+SELECT 
+Patient->FirstName, Patient->LastName,Code, Units, Value
+FROM datalake_data.Observation
 ```
 
 
