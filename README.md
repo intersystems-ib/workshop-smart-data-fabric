@@ -159,4 +159,5 @@ In this case, we are using [R01Model.cls](src/datalake/connectors/interop/datapi
 * [HL7 Ingestion](http://localhost:52773/csp/datalake/EnsPortal.BPLEditor.zen?BP=datalake.connectors.interop.datapipe.bp.HL7Ingestion.bpl) - Business Process that: 
   * Extract attributes (metadata) from incoming HL7 message using [R01ToInboxAttributes](http://localhost:52773/csp/datalake/EnsPortal.DTLEditor.zen?DT=datalake.connectors.interop.datapipe.dt.R01ToInboxAttributes.dtl) data transform.
   * Converts incoming HL7 message into [datalake.connectors.interop.datapipe.model.R01Model.cls](src/datalake/connectors/interop/datapipe/model/R01Model.cls) using [R01ToModel](http://localhost:52773/csp/datalake/EnsPortal.DTLEditor.zen?DT=datalake.connectors.interop.datapipe.dt.R01ToModel.dtl) data transform.
-
+* `HL7 Staging` is a DataPipe business process (`DataPipe.Staging.BP.StagingManager`) that handles the normalization and validation of your DataPipe model.
+* `HL7 Oper` is another DataPipe business process (`DataPipe.Oper.BP.OperManager`) that handles running your DataPipe model operation.
