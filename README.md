@@ -131,7 +131,7 @@ cd iris-datapipeUI
 docker-compose up -d
 ```
 
-## Try ingesting some data yourself
+## Try ingesting some data yourself
 * In the environment, open the [production](http://localhost:52773/csp/datalake/EnsPortal.ProductionConfig.zen?PRODUCTION=datalake.connectors.interop.Production). It is already running.
 * Let's ingest some data.
 * Copy some files from [data/hl7files](data/hl7files) into [data/hl7in](data/hl7in).
@@ -166,7 +166,7 @@ In this case, we are using [R01Model.cls](src/datalake/connectors/interop/datapi
 
 Let's create a REST service to interact with your `datalake.data.*` classes. But first, we can start by working with JSON.
 
-## JSON
+## JSON
 
 ### %JSON.Adaptor
 Your `datalake.data.*` classes already extends from [%JSON.Adaptor](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GJSON_adaptor). It provides some nice features for importing and exporting your objects to and from JSON.
