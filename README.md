@@ -161,3 +161,90 @@ In this case, we are using [R01Model.cls](src/datalake/connectors/interop/datapi
   * Converts incoming HL7 message into [datalake.connectors.interop.datapipe.model.R01Model.cls](src/datalake/connectors/interop/datapipe/model/R01Model.cls) using [R01ToModel](http://localhost:52773/csp/datalake/EnsPortal.DTLEditor.zen?DT=datalake.connectors.interop.datapipe.dt.R01ToModel.dtl) data transform.
 * `HL7 Staging` is a DataPipe business process (`DataPipe.Staging.BP.StagingManager`) that handles the normalization and validation of your DataPipe model.
 * `HL7 Oper` is another DataPipe business process (`DataPipe.Oper.BP.OperManager`) that handles running your DataPipe model operation.
+
+# Services
+
+Let's create a REST service to interact with your `datalake.data.*` classes. But first, we can start by working with JSON.
+
+## JSON
+
+### %JSON.Adaptor
+Your `datalake.data.*` classes already extends from [%JSON.Adaptor](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GJSON_adaptor). It provides some nice features for importing and exporting your objects to and from JSON.
+
+Open a [WebTerminal](http://localhost:52773/terminal/) session and try the following:
+
+Open an object and export to JSON:
+
+```objectscript
+    // open an object from a persistent class
+    set patient = ##class(datalake.data.Patient).%OpenId(1)
+    // directly, export to json to current device
+    do patient.%JSONExport()
+```
+
+Now, let's try to format the JSON for our object:
+
+```objectscript
+    // export patient object to a json string
+    do patient.%JSONExportToString(.json)
+    // instantiate a json formatter
+    set formatter = ##class(%JSON.Formatter).%New()
+    do formatter.FormatToString(json, .formattedJson)
+    // print formatted json
+    write formattedJson
+```
+
+In your [datalake.data.Patient](src/datalake/data/Patient.cls) class, change the `%JSONREFERENCE` attribute from `ID` to `OBJECT` or viceversa and try again the following:
+
+```objectscript
+    // delete previous in-memory object definition
+    kill patient
+    // re-open object (so it can load your change on %JSONREFERENCE)
+    set patient = ##class(datalake.data.Patient).%OpenId(1)
+    // export to a formatted json string
+    do patient.%JSONExportToString(.json)
+    do formatter.FormatToString(json, .formattedJson)
+    // print your json string
+    write formattedJson
+```
+
+Can you tell the difference between using `ID` or `OBJECT`?
+
+**Important!** Before going on, be sure your [datalake.data.Patient](src/datalake/data/Patient.cls) class has `(%JSONREFERENCE = "ID")` defined.
+
+[%JSON.Adaptor](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GJSON_adaptor) has a lot of nice features that allows you to export and import and customize those behaviours. We'll use them in the REST service we will implement.
+
+`%JSON.Adaptor` is a nice approach if you have already defined classes that you want to serialize or deserialize to JSON format.
+
+### %DynamicObjects
+
+[%DynamicObjects](https://docs.intersystems.com/irisforhealth20222/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON_create) allows you to work with JSON structures without having a previous definition (dynamically).
+
+In your [WebTerminal](http://localhost:52773/terminal/) session try the following:
+
+```objectscript
+    set dynamicObject = {"prop1":"a string value"}
+    write dynamicObject.prop1
+
+    set dynamicArray = [[1,2,3],{"A":33,"a":"lower case"},1.23456789012345678901234,true,false,null,0,1,""]
+    write dynamicArray.%ToJSON()
+```
+
+Have a look at the documentation section [Using JSON in ObjectScript](https://docs.intersystems.com/irisforhealth20222/csp/docbook/DocBook.UI.Page.cls?KEY=GJSON_intro) to have an overview of all the options you have available with `%JSON.Adaptor` or `%DynamicObjects`.
+
+
+## REST Service
+
+There are different ways of implement REST services in InterSystems IRIS. We will implement a `%CSP.REST` service. Don't forget to check the documentation section [Introduction to Creating REST Services](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GREST_intro) to have a full view.
+
+Open [datalake.connectors.api.DataEndpoint](src/datalake/connectors/api/DataEndpoint.cls). This will be our service for accesing some of our `datalake.data.*` classes.
+
+Review the different methods that are implemeted and try to figure out what are they doing.
+
+REST services needs a web application that forwards HTTP requests to them, in this case we have the [/datalake/api](http://localhost:52773/csp/sys/sec/%25CSP.UI.Portal.Applications.Web.zen?PID=%2Fdatalake%2Fapi) web application.
+
+Also, in [iris.script](iris.script) you will find how this web application is imported during the container image build for the environment.
+
+Finally, try your service using **Postman**. Import the [workshop-iris-datalake.postman_collection.json](workshop-iris-datalake.postman_collection.json) included in the repository and try the different requests:
+
+<img src="img/rest-postman.gif" witdth="1024"/>

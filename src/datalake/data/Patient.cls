@@ -13,7 +13,7 @@ Property AdministrativeSex As %String(VALUELIST = ",M,F");
 
 Property BirthDate As %Date;
 
-Relationship Observations As Observation [ Cardinality = many, Inverse = Patient ];
+Relationship Observations As Observation(%JSONREFERENCE = "ID") [ Cardinality = many, Inverse = Patient ];
 
 Index IdentifierIdx On Identifier [ Unique ];
 

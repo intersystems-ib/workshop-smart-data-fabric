@@ -152,6 +152,7 @@ Method RunOperation(Output errorList As %List, Output log As %Stream.Object, bOp
             set obxObj = ##class(datalake.data.Observation).%New()
             set obxObj.Code = obxCode
             set obxObj.Status = "F"
+            set obxObj.Value = obxValue
             set obxObj.Units = obxUnits
             set obxObj.TimeStamp = obxDateTime
             do patientObj.Observations.Insert(obxObj)

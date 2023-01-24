@@ -16,7 +16,7 @@ Property Value As %String;
 Property TimeStamp As %TimeStamp;
 
 /// referenced Patient
-Relationship Patient As Patient [ Cardinality = one, Inverse = Observations ];
+Relationship Patient As Patient(%JSONREFERENCE = "ID") [ Cardinality = one, Inverse = Observations ];
 
 Index PatientIdx On Patient;
 
