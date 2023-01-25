@@ -31,6 +31,8 @@ XData ProductionDefinition
     <Setting Target="Host" Name="TelegramCredentials">TelegramBotToken</Setting>
     <Setting Target="Host" Name="DefaultTelegramChatId">your-chatId</Setting>
   </Item>
+  <Item Name="TelegramFromService" Category="" ClassName="datalake.connectors.interop.bs.TelegramFromService" PoolSize="0" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+  </Item>
 </Production>
 }
 

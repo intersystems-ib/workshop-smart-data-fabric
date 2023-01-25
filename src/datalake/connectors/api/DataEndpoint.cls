@@ -11,6 +11,9 @@ XData UrlMap
     <Route Url="/patient/:id/observations/xls" Method="GET" Call="GetPatientObservationsExcel"/>
     <Route Url="/patient/:id" Method="PUT" Call="UpdatePatient"/>
     <Route Url="/patient" Method="POST" Call="CreatePatient"/>
+
+    <!-- summary -->
+    <Route Url="/summary" Method="GET" Call="GetSummary"/>
 </Routes>
 }
 
@@ -149,6 +152,42 @@ ClassMethod CreatePatient(id As %String) As %Status
         $$$ThrowOnError(obj.%JSONImport(body))
         $$$ThrowOnError(obj.%Save())
         do obj.%JSONExport()
+
+    } catch ex {
+        set ret = ex.AsStatus()
+    }
+    quit ret
+}
+
+ClassMethod GetSummary() As %Status
+{
+    set ret = $$$OK
+    try {
+        set totalPatients = 0, totalObservations = 0
+
+        set sql="select count(*) as total from datalake_data.Patient"
+		set statement = ##class(%SQL.Statement).%New()
+		$$$ThrowOnError(statement.%Prepare(sql))
+        set rs = statement.%Execute()
+        if rs.%Next() {
+            set totalPatients = rs.%Get("total")
+        }
+
+        set sql="select count(*) as total from datalake_data.Observation"
+		set statement = ##class(%SQL.Statement).%New()
+		$$$ThrowOnError(statement.%Prepare(sql))
+        set rs = statement.%Execute()
+        if rs.%Next() {
+            set totalObservations = rs.%Get("total")
+        }
+
+        set msg = "Your datalake summary: Total Patients = "_totalPatients_", Total Observations = "_totalObservations
+        set %response.Status = "200"
+        write { "msg": (msg) }.%ToJSON()
+
+        // invoke interoperability context, instatiate your business service
+        $$$ThrowOnError(##class(Ens.Director).CreateBusinessService("TelegramFromService",.service))
+        $$$ThrowOnError(service.OnProcessInput(msg))
 
     } catch ex {
         set ret = ex.AsStatus()

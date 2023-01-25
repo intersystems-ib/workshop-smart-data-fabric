@@ -309,4 +309,14 @@ You can call your Telegram business operation from the ingestion layer using you
     }
 ```
 
+### Services
+You can also call interoperability components from your REST service context.
+
+Let's call the Telegram business operation from the REST service:
+* Service will handle requests to `/summary` to send a summary of the datalake.
+* This will be implemented in [DataEndpoint](datalake.connectors.api.DataEndpoint):`GetSummary`.
+* In the method, we will call interoperability components. For that you need to start your call instatiating a Business Service that will init the interoperability context.
+* We will instantiate [TelegramFromService](datalake.connectors.interop.bs.TelegramFromService) business service. It will simply send a message to our Telegram business operation.
+
+
 
