@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:52773/datalake/api/patient",
+					"raw": "http://localhost:52773/datalake/api/patient?page=2&pageSize=3",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -22,6 +22,16 @@
 						"datalake",
 						"api",
 						"patient"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": "3"
+						}
 					]
 				}
 			},
@@ -44,6 +54,80 @@
 						"api",
 						"patient",
 						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient Observations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52773/datalake/api/patient/14/observations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"datalake",
+						"api",
+						"patient",
+						"14",
+						"observations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Identifier\": \"11111\",\n    \"FirstName\": \"TestFirstName\",\n    \"LastName\": \"TestLastName\",\n    \"AdministrativeSex\": \"M\",\n    \"BirthDate\": \"1983-12-01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/datalake/api/patient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"datalake",
+						"api",
+						"patient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Patient",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Identifier\": \"11112\",\n    \"FirstName\": \"TestFirstNameEdited\",\n    \"LastName\": \"TestLastName\",\n    \"AdministrativeSex\": \"M\",\n    \"BirthDate\": \"1983-12-01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/datalake/api/patient/15",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"datalake",
+						"api",
+						"patient",
+						"15"
 					]
 				}
 			},

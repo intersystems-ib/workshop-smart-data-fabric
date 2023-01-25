@@ -24,15 +24,32 @@ ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue A
     Quit $$$OK
 }
 
+/// Return patients and implement a simple pagination
+/// See: https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=GSQL_dynsql#GSQL_dynsql_stmtresults_page
 ClassMethod GetPatients() As %Status
 {
     set ret = $$$OK
     try {
-        set sql="select Id, Identifier, FirstName, LastName from datalake_data.Patient ORDER BY Id"
+        // retrieve page and pageSize
+        set page = $get(%request.Data("page",1))
+        set pageSize = $get(%request.Data("pageSize",1))
+
+        // default values
+        if page="" set page=1
+        if pageSize="" set pageSize=100
+
+        // calculate %vid window (pagination)
+        set vidStart = ((page-1)*pageSize)+1
+        set vidEnd = (page*pageSize)
+        
+        set sql = 
+            "SELECT %VID AS RSRow,* FROM "_
+            "(select Id, Identifier, FirstName, LastName from datalake_data.Patient) "_
+            "WHERE %VID BETWEEN ? AND ?"
 		set statement = ##class(%SQL.Statement).%New()
 		$$$ThrowOnError(statement.%Prepare(sql))
+        set rs = statement.%Execute(vidStart, vidEnd)
         
-        set rs = statement.%Execute()
         set array = []
         while rs.%Next() {
             do array.%Push({
