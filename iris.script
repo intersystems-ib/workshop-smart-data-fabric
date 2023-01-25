@@ -36,8 +36,14 @@
     
     set $namespace = "DATALAKE"
 
+    // enable analytics
+    do EnableDeepSee^%SYS.cspServer("/csp/datalake/",1)
+
     // install webterminal using zpm
     zpm "install webterminal"
+
+    // install dsw
+    zpm "install dsw"
 
     // load & compile source code
     set sc = $SYSTEM.OBJ.LoadDir("/opt/irisapp/src", "ck", .errorlog, 1)

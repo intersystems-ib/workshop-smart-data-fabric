@@ -23,6 +23,8 @@ Property ObxUnits As %ArrayOfDataTypes;
 
 Property ObxDateTime As %ArrayOfDataTypes;
 
+Property ObxDataType As %ArrayOfDataTypes;
+
 /// Serialize to json
 Method Serialize(Output stream) As %Status
 {
@@ -149,10 +151,16 @@ Method RunOperation(Output errorList As %List, Output log As %Stream.Object, bOp
             quit:obxCode="" 
             set obxUnits = ..ObxUnits.GetAt(obxCode) 
             set obxDateTime = ..ObxDateTime.GetAt(obxCode) 
+            set obxDataType = ..ObxDataType.GetAt(obxCode) 
             set obxObj = ##class(datalake.data.Observation).%New()
             set obxObj.Code = obxCode
             set obxObj.Status = "F"
-            set obxObj.Value = obxValue
+            if obxDataType = "NM" {
+                set obxObj.ValueNM = obxValue
+            } else {
+                set obxObj.ValueST = obxValue
+            }
+            
             set obxObj.Units = obxUnits
             set obxObj.TimeStamp = obxDateTime
             do patientObj.Observations.Insert(obxObj)

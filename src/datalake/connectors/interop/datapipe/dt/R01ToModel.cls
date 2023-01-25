@@ -24,6 +24,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"SystolicBP"' />
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"SystolicBP"' />
 <assign value='##class(datalake.connectors.interop.Functions).HL7DateToTimeStamp(source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:DateTimeoftheObservation.Time})' property='target.ObxDateTime' action='set' key='"SystolicBP"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ValueType}' property='target.ObxDataType' action='set' key='"SystolicBP"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="DIASTOLIC_BLOODPRESSURE"' >
@@ -31,6 +32,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"DiastolicBP"' />
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"DiastolicBP"' />
 <assign value='##class(datalake.connectors.interop.Functions).HL7DateToTimeStamp(source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:DateTimeoftheObservation.Time})' property='target.ObxDateTime' action='set' key='"DiastolicBP"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ValueType}' property='target.ObxDataType' action='set' key='"DiastolicBP"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="BLOOD_GLUCOSE"' >
@@ -38,6 +40,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"BloodGlucose"' />
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"BloodGlucose"' />
 <assign value='##class(datalake.connectors.interop.Functions).HL7DateToTimeStamp(source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:DateTimeoftheObservation.Time})' property='target.ObxDateTime' action='set' key='"BloodGlucose"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ValueType}' property='target.ObxDataType' action='set' key='"BloodGlucose"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="BODY_TEMP"' >
@@ -45,6 +48,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"BodyTemp"' />
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"BodyTemp"' />
 <assign value='##class(datalake.connectors.interop.Functions).HL7DateToTimeStamp(source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:DateTimeoftheObservation.Time})' property='target.ObxDateTime' action='set' key='"BodyTemp"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ValueType}' property='target.ObxDataType' action='set' key='"BodyTemp"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="HEART_RATE"' >
@@ -52,6 +56,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"HeartRate"' />
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"HeartRate"' />
 <assign value='##class(datalake.connectors.interop.Functions).HL7DateToTimeStamp(source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:DateTimeoftheObservation.Time})' property='target.ObxDateTime' action='set' key='"HeartRate"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ValueType}' property='target.ObxDataType' action='set' key='"HeartRate"' />
 </true>
 </if>
 <if condition='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationIdentifier.Text}="RISK_LEVEL"' >
@@ -59,6 +64,7 @@ XData DTL [ XMLNamespace = "http://www.intersystems.com/dtl" ]
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ObservationValue(1)}' property='target.ObxValues' action='set' key='"RiskLevel"' />
 <assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:Units.Text}' property='target.ObxUnits' action='set' key='"RiskLevel"' />
 <assign value='##class(datalake.connectors.interop.Functions).HL7DateToTimeStamp(source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:DateTimeoftheObservation.Time})' property='target.ObxDateTime' action='set' key='"RiskLevel"' />
+<assign value='source.{PIDgrpgrp(1).ORCgrp(1).OBXgrp(k1).OBX:ValueType}' property='target.ObxDataType' action='set' key='"RiskLevel"' />
 </true>
 </if>
 </foreach>

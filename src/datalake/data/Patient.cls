@@ -13,6 +13,9 @@ Property AdministrativeSex As %String(VALUELIST = ",M,F");
 
 Property BirthDate As %Date;
 
+/// Age. Calculated column
+Property Age As %Integer [ SqlComputeCode = { set {Age} = ..CalcAge({BirthDate})}, SqlComputed, SqlComputeOnChange = %%UPDATE ];
+
 Relationship Observations As Observation(%JSONREFERENCE = "ID") [ Cardinality = many, Inverse = Patient ];
 
 Index IdentifierIdx On Identifier [ Unique ];
@@ -20,6 +23,15 @@ Index IdentifierIdx On Identifier [ Unique ];
 Method IdGet() As %String
 {
 	quit ..%Id()
+}
+
+ClassMethod CalcAge(dob As %Date) As %Integer
+{
+	set age = ""
+	if dob '= "" {
+		set age = $number(($horolog-dob)/365,0) 
+	}
+	return age
 }
 
 ClassMethod GetByIdentifier(identifier As %String, Output obj As Patient) As %Status
@@ -64,6 +76,9 @@ Storage Default
 </Value>
 <Value name="6">
 <Value>BirthDate</Value>
+</Value>
+<Value name="7">
+<Value>Age</Value>
 </Value>
 </Data>
 <DataLocation>^datalake.data.PatientD</DataLocation>

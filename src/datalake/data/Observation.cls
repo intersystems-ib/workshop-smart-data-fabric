@@ -11,7 +11,9 @@ Property Status As %String;
 
 Property Units As %String;
 
-Property Value As %String;
+Property ValueNM As %Numeric;
+
+Property ValueST As %String;
 
 Property TimeStamp As %TimeStamp;
 
@@ -44,12 +46,15 @@ Storage Default
 <Value>Units</Value>
 </Value>
 <Value name="6">
-<Value>Value</Value>
+<Value>ValueNM</Value>
 </Value>
 <Value name="7">
-<Value>TimeStamp</Value>
+<Value>ValueST</Value>
 </Value>
 <Value name="8">
+<Value>TimeStamp</Value>
+</Value>
+<Value name="9">
 <Value>Patient</Value>
 </Value>
 </Data>

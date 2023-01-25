@@ -49,7 +49,7 @@ ClassMethod GetPatients() As %Status
 		set statement = ##class(%SQL.Statement).%New()
 		$$$ThrowOnError(statement.%Prepare(sql))
         set rs = statement.%Execute(vidStart, vidEnd)
-        
+
         set array = []
         while rs.%Next() {
             do array.%Push({
@@ -86,7 +86,7 @@ ClassMethod GetPatientObservations(patientId As %String) As %Status
 {
     set ret = $$$OK
     try {
-        set sql="select Id, Identifier, Code, Status, Units, Value, TimeStamp from datalake_data.Observation WHERE Patient=? ORDER BY Id"
+        set sql="select Id, Identifier, Code, Status, Units, ValueNM, ValueST, TimeStamp from datalake_data.Observation WHERE Patient=? ORDER BY Id"
 		set statement = ##class(%SQL.Statement).%New()
 		$$$ThrowOnError(statement.%Prepare(sql))
         
@@ -99,7 +99,8 @@ ClassMethod GetPatientObservations(patientId As %String) As %Status
                     "Code": (rs.%Get("Code")),
                     "Status": (rs.%Get("Status")),
                     "Units": (rs.%Get("Units")),
-                    "Value": (rs.%Get("Value")),
+                    "ValueNM": (rs.%Get("ValueNM")),
+                    "ValueST": (rs.%Get("ValueST")),
                     "TimeStamp": (rs.%Get("TimeStamp"))
                 })
         }
@@ -116,7 +117,7 @@ ClassMethod GetPatientObservationsExcel(patientId As %String) As %Status
 {
     set ret = $$$OK
     try {
-        set sql="select Id, Identifier, Code, Status, Units, Value, TimeStamp from datalake_data.Observation WHERE Patient=? ORDER BY Id"
+        set sql="select Id, Identifier, Code, Status, Units, ValueNM, ValueST, TimeStamp from datalake_data.Observation WHERE Patient=? ORDER BY Id"
 		set statement = ##class(%SQL.Statement).%New()
 		$$$ThrowOnError(statement.%Prepare(sql))
         
