@@ -8,6 +8,7 @@ XData UrlMap
     <Route Url="/patient" Method="GET" Call="GetPatients"/>
     <Route Url="/patient/:id" Method="GET" Call="GetPatientById"/>
     <Route Url="/patient/:id/observations" Method="GET" Call="GetPatientObservations"/>
+    <Route Url="/patient/:id/observations/xls" Method="GET" Call="GetPatientObservationsExcel"/>
     <Route Url="/patient/:id" Method="PUT" Call="UpdatePatient"/>
     <Route Url="/patient" Method="POST" Call="CreatePatient"/>
 </Routes>
@@ -84,6 +85,36 @@ ClassMethod GetPatientObservations(patientId As %String) As %Status
         }
         set %response.Status = "200"
         write array.%ToJSON()
+
+    } catch ex {
+        set ret = ex.AsStatus()
+    }
+    quit ret
+}
+
+ClassMethod GetPatientObservationsExcel(patientId As %String) As %Status
+{
+    set ret = $$$OK
+    try {
+        set sql="select Id, Identifier, Code, Status, Units, Value, TimeStamp from datalake_data.Observation WHERE Patient=? ORDER BY Id"
+		set statement = ##class(%SQL.Statement).%New()
+		$$$ThrowOnError(statement.%Prepare(sql))
+        
+        set rs = statement.%Execute(patientId)
+
+        // export to xlsx
+        set xlsFileName = "/app/"_$job_".xlsx"
+        do ##class(datalake.Utils).ResultSetToXls(rs, xlsFileName)
+
+        // return file as response
+        set %response.ContentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        do %response.SetHeader("Content-Disposition","attachment;filename=""patient-"_patientId_"-observations.xlsx""")
+        set stream=##class(%Stream.FileBinary).%New()
+        set sc=stream.LinkToFile(xlsFileName)
+        do stream.OutputToDevice()
+
+        // delete temporary file
+        do ##class(%File).Delete(xlsFileName)
 
     } catch ex {
         set ret = ex.AsStatus()

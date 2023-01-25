@@ -3,6 +3,12 @@ FROM $IMAGE
 
 USER root
 
+# install additional packages (python)
+RUN apt-get update && apt-get install -y \
+  python3-pip \
+  && rm -rf /var/lib/apt/lists/*
+
+# create directory to copy files into image
 WORKDIR /opt/irisapp
 RUN chown -R irisowner:irisowner /opt/irisapp
 
@@ -13,6 +19,9 @@ WORKDIR /opt/irisapp
 COPY --chown=irisowner:irisowner iris.script iris.script
 COPY --chown=irisowner:irisowner src src
 COPY --chown=irisowner:irisowner install install
+
+# install python libraries we will use
+RUN pip3 install --target /usr/irissys/mgr/python/ pandas openpyxl
 
 # -- datapipe download
 # download RESTForms2 (requirement). use this version, latest on intersystems-community have some breaking differences on OperErrorsJson fields, etc.
