@@ -29,6 +29,13 @@ Build the image we will use during the workshop:
 docker-compose build
 ```
 
+Run the container:
+```
+docker-compose up -d
+```
+
+You should be able to access [InterSystems IRIS Management Portal](http://localhost:52773/csp/sys/UtilHome.csp) and login using `superuser` / `SYS`.
+
 # Environment
 We are going to use an environment using Docker containers. 
 
@@ -37,10 +44,6 @@ We are going to use an environment using Docker containers.
 * [docker-compose](docker-compose.yml) - set up the containers (services) we are using. In this case, we are using only an InterSystems IRIS container.
 * [Dockerfile](Dockerfile) - this file defines how we are building our InterSystems IRIS Container. We will start from an InterSystems IRIS For Health Community version, copy some directories, set up some permissions and finally call iris.script to run whatever we need within IRIS.
 * [iris.script](iris.script) - script that runs the setup we need in IRIS, e.g. installing applications, loading source code, etc.
-
-docker-compose
-Dockerfile
-iris.script
 
 After running the environment, you can access to an interactive sesion on IRIS container using:
 ```
