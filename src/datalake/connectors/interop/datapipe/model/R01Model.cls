@@ -163,6 +163,15 @@ Method RunOperation(Output errorList As %List, Output log As %Stream.Object, bOp
         TCOMMIT
         $$$AddLog(log, "Transaction Commited")
 
+        /*
+        // you can send messages to other production components (while you are not on an open transaction)
+        if $isobject(bOperation) {
+            set req = ##class(datalake.connectors.interop.msg.TelegramMsgReq).%New()
+            set req.text = "Patient ("_..PatientId_") ingested! 🌡️ "_$number(..ObxValues.GetAt("BodyTemp"),2)_" "_..ObxUnits.GetAt("BodyTemp")
+            $$$ThrowOnError(bOperation.SendRequestAsync("TelegramSendMessage", req))
+        }
+        */
+
     } catch ex {
         TROLLBACK 
         $$$AddLog(log, "Rollback!")

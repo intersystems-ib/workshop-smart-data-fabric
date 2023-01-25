@@ -293,3 +293,20 @@ You can now test your Telegram Business Operation:
 
 <img src="img/telegram-bo-test.gif" width="1024" />
 
+## Calling your Business operation
+
+### Ingestion
+You can call your Telegram business operation from the ingestion layer using your Data Pipe model, try to add the following in [R01Model](src/datalake/connectors/interop/datapipe/model/R01Model.cls):
+
+```objectscript
+    $$$AddLog(log, "Transaction Commited")
+
+    // you can send messages to other production components (while you are not on an open transaction)
+    if $isobject(bOperation) {
+        set req = ##class(datalake.connectors.interop.msg.TelegramMsgReq).%New()
+        set req.text = "Patient ("_..PatientId_") ingested! 🌡️ "_$number(..ObxValues.GetAt("BodyTemp"),2)_" "_..ObxUnits.GetAt("BodyTemp")
+        $$$ThrowOnError(bOperation.SendRequestAsync("TelegramSendMessage", req))
+    }
+```
+
+
