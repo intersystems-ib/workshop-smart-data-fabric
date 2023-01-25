@@ -24,6 +24,13 @@ XData ProductionDefinition
   </Item>
   <Item Name="HL7 Ingestion" Category="Ingestion" ClassName="datalake.connectors.interop.datapipe.bp.HL7Ingestion" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
   </Item>
+  <Item Name="TelegramSendMessage" Category="" ClassName="datalake.connectors.interop.bo.TelegramSendMessage" PoolSize="1" Enabled="true" Foreground="false" Comment="" LogTraceEvents="false" Schedule="">
+    <Setting Target="Adapter" Name="HTTPPort">443</Setting>
+    <Setting Target="Adapter" Name="HTTPServer">api.telegram.org</Setting>
+    <Setting Target="Adapter" Name="SSLConfig">ssl</Setting>
+    <Setting Target="Host" Name="TelegramCredentials">TelegramBotToken</Setting>
+    <Setting Target="Host" Name="DefaultTelegramChatId">your-chatId</Setting>
+  </Item>
 </Production>
 }
 

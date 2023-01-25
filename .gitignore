@@ -21,3 +21,5 @@ local/*
 
 # generated hl7 files
 data/hl7files/*.hl7
+
+LOCAL.md

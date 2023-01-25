@@ -1,6 +1,6 @@
 Learn the main ideas involved in developing a DataLake using InterSystems IRIS.
 
-<img src="img/datalake.png" width="1500px"/>
+<img src="img/datalake.png" width="1500"/>
 
 # Learn the basics
 👉 We will combine different features of InterSystems IRIS such as multi-model database, interoperability and analytics.
@@ -39,7 +39,7 @@ You should be able to access [InterSystems IRIS Management Portal](http://localh
 # Environment
 We are going to use an environment using Docker containers. 
 
-<img src="img/docker-environment.png" width="800px" />
+<img src="img/docker-environment.png" width="800" />
 
 * [docker-compose](docker-compose.yml) - set up the containers (services) we are using. In this case, we are using only an InterSystems IRIS container.
 * [Dockerfile](Dockerfile) - this file defines how we are building our InterSystems IRIS Container. We will start from an InterSystems IRIS For Health Community version, copy some directories, set up some permissions and finally call iris.script to run whatever we need within IRIS.
@@ -66,7 +66,7 @@ These classes also use [Relationships](https://docs.intersystems.com/irisforheal
 
 Go to [System Explorer > SQL (DATALAKE)](http://localhost:52773/csp/sys/%25CSP.Portal.Home.zen?$NAMESPACE=DATALAKE&$NAMESPACE=DATALAKE&#), locate the tables corresponding to our persistent classes and display them. They should be empty.
 
-<img src="img/sql-explorer-empty.gif" width="1024px"/>
+<img src="img/sql-explorer-empty.gif" width="1024"/>
 
 We manipulate data using SQL or Objects. Let's create some simple data using objects through the [WebTerminal](http://localhost:52773/terminal/)
 
@@ -142,12 +142,12 @@ docker-compose up -d
 * Access http://localhost:8080 to have a glance at the DataPipeUI
 * After processing data, run some SQL queries again.
 
-<img src="img/hl7-ingestion-datapipe.gif" width="1024px" />
+<img src="img/hl7-ingestion-datapipe.gif" width="1024" />
 
 ## DataPipe Model
 DataPipe allows you to define an interoperability model with the properties that you need, and then decide how are you going to normalize and validate it. You have to implement a few methods.
 
-<img src="img/datapipe-abstract-model.png" width="200px" />
+<img src="img/datapipe-abstract-model.png" width="200" />
 
 In this case, we are using [R01Model.cls](src/datalake/connectors/interop/datapipe/model/R01Model.cls):
 * It defines the properties we need for processing incoming ORU^R01 HL7 messages with observations.
@@ -252,7 +252,6 @@ Finally, try your service using **Postman**. Import the [workshop-iris-datalake.
 
 <img src="img/rest-postman.gif" witdth="1024"/>
 
-
 ## Embedded Python
 Embedded Python allows you to use Python to program InterSystems IRIS applications. You can even mix ObjectScript methods and Python methods and refer to objects created in either language! And of course you could use any Python libraries on your implementation. Check the documentation section [Using Embedded Python](https://docs.intersystems.com/irisforhealth20222/csp/docbook/DocBook.UI.Page.cls?KEY=AEPYTHON) to have a full view on this topic.
 
@@ -262,4 +261,35 @@ We are going to use Embedded Python to implement in our REST service an operatio
 * Actual resultset to Excel conversion will be run in [datalake.Utils](src/datalake/Utils.cls):`ResultSetToXls` which is an Embedded Python classmethod that takes advantage of openpyxl](https://openpyxl.readthedocs.io/en/stable/) library.
 
 You can test it accessing to http://localhost:52773/datalake/api/patient/2/observations/xls in your browser.
+
+# Interoperability
+
+We are going to create a Telegram bot and use it to send some notifications about our datalake.
+
+## Telegram bot setup
+* Create a Telegram bot using [BotFather](https://t.me/botfather) bot.
+```
+/newbot
+```
+Write down your Telegram Bot token.
+
+* Open a new Telegram chat with your brand new Telegram bot. Write some dummy messages.
+* Usually, you will process incoming messages to your bot using a WebHook or the getUpdates Telegram API. In this example, we will only focus on sending messages.
+* You will need a **chat id** and your **token** to send messages.
+* Grab your **chat id** by accesing [https://api.telegram.org/bot<your_token>/getUpdates](https://api.telegram.org/bot<your_token>/getUpdates). You should get a JSON response from Telegram. Look for something like:
+```
+...
+"chat":{"id":<your_chatId>
+...
+```
+
+## Business operation settings
+* Go to [IRIS > Interoperability > Configure > Credentials](http://localhost:52773/csp/datalake/EnsPortal.Credentials.zen?$NAMESPACE=DATALAKE&$NAMESPACE=DATALAKE&) and create a `TelegramBotToken` Credentials with your token as password.
+* Go to our [Interoperability Production](http://localhost:52773/csp/datalake/EnsPortal.ProductionConfig.zen?PRODUCTION=datalake.connectors.interop.Production&$NAMESPACE=DATALAKE), select `TelegramSendMessage` operation and set the following:
+  * TelegramCredentials: `TelegramBotToken`
+  * DefaultTelegramChatId: `your chatId`
+
+You can now test your Telegram Business Operation:
+
+<img src="img/telegram-bo-test.gif" width="1024" />
 

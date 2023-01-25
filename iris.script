@@ -30,6 +30,9 @@
     set $namespace = "%SYS"
     write ##class(Security.Applications).Import("/opt/irisapp/install/webapp-dpipe.xml")
     write ##class(Security.Applications).Import("/opt/irisapp/install/webapp-datalake-api.xml")
+
+    // load default SSL config for HTTPS
+    write ##class(Security.SSLConfigs).Import("/opt/irisapp/install/ssl.xml")
     
     set $namespace = "DATALAKE"
 
