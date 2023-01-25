@@ -283,7 +283,7 @@ Write down your Telegram Bot token.
 ...
 ```
 
-## Business operation settings
+## Business operation settings
 * Go to [IRIS > Interoperability > Configure > Credentials](http://localhost:52773/csp/datalake/EnsPortal.Credentials.zen?$NAMESPACE=DATALAKE&$NAMESPACE=DATALAKE&) and create a `TelegramBotToken` Credentials with your token as password.
 * Go to our [Interoperability Production](http://localhost:52773/csp/datalake/EnsPortal.ProductionConfig.zen?PRODUCTION=datalake.connectors.interop.Production&$NAMESPACE=DATALAKE), select `TelegramSendMessage` operation and set the following:
   * TelegramCredentials: `TelegramBotToken`
