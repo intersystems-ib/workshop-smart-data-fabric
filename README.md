@@ -142,6 +142,12 @@ docker-compose up -d
 * Access http://localhost:8080 to have a glance at the DataPipeUI
 * After processing data, run some SQL queries again.
 
+You can also copy all files using:
+```
+cd data
+cp hl7files/*.hl7 hl7in
+```
+
 <img src="img/hl7-ingestion-datapipe.gif" width="1024" />
 
 ## DataPipe Model
@@ -319,6 +325,9 @@ Let's call the Telegram business operation from the REST service:
 * We will instantiate [TelegramFromService](datalake.connectors.interop.bs.TelegramFromService) business service. It will simply send a message to our Telegram business operation.
 
 # Analytics
+
+<img src="img/iris-analytics-platform.png" width="1024" />
+
 There multiple ways in which you can leverage [analytics & data science](https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=PAGE_data_science) using InterSystems IRIS:
 - IRIS Business Intelligence - Allows you to embed business intelligence into your applications. You can have a first look at it in [workshop-iris-bi-intro](https://github.com/intersystems-ib/workshop-iris-bi-intro)
 - Adaptive Analytics - an optional extension that provides a business-oriented, virtual data model layer between InterSystems IRIS and popular Business Intelligence (BI) and Artificial Intelligence (AI) client tools. You can checkout this Spanish Webinar [Self-Service Analytics y Reporting](https://comunidadintersystems.com/webinar-self-service-analytics-y-reporting).
@@ -329,6 +338,8 @@ We will focus on IRIS BI on our first example.
 Open [Management Portal > Analytics > Datalake > Architect > Open Observations Cube](http://localhost:52773/csp/datalake/_DeepSee.UI.Architect.zen?$NAMESPACE=DATALAKE&CUBE=ObxCube.cube) and go through the different dimensions and measures defined for a cube based on the observations persistent class.
 
 These dimensions and measures define what kind of analysis can be done using this cube.
+
+Click on **Build** to build the cube based on the data you have loaded previously.
 
 <img src="img/bi-architect.png" width="1024" />
 
@@ -353,3 +364,55 @@ You can checkout in your example accessing http://localhost:52773/dsw/index.html
 
 <img src="img/bi-dsw.gif" width="1024" />
 
+
+## Machine Learning. IntegratedML
+Again, there are different ways you can add [Machine Learning features on your InterSystems IRIS Applications](https://docs.intersystems.com/irisforhealth20222/csp/docbook/DocBook.UI.Page.cls?KEY=GIML_Intro):
+* IntegratedML - is an InterSystems IRIS features that allows you to leverage automated machine learning functions directly from SQL.
+* [PMML](https://docs.intersystems.com/irisforhealth20222/csp/docbook/DocBook.UI.Page.cls?KEY=APMML) - Predictive Modeling Markup Language is an XML-based standard that expresses analytical models. You can express a model using PMML and deploy it in InterSystems IRIS.
+* Python libraries - and of course, taking advantage of Embedded Python, you can use Python libraries such as `pandas`, `scikit-learn`, `tensorflow`, etc directly with your IRIS data to implement your ML models.
+
+We will focus on a simple example of [IntegratedML](https://docs.intersystems.com/irisforhealth20222/csp/docbook/Doc.View.cls?KEY=GIML_Intro).
+
+<img src="img/automl.png" width="800" />
+
+We are still using a dataset inspired on [Maternal Health Risk Data](https://www.kaggle.com/datasets/csafrit2/maternal-health-risk-data) dataset from Kaggle. 
+
+"Inspired" in this particular case means that we won't have all the data available, so the accuracy of our ML model could be better.
+
+In any case, if you are interested on using the whole dataset check out [workshop-integratedml-intro](https://github.com/intersystems-ib/workshop-integratedml-intro).
+
+Now, in our example check the following:
+* [MaternalRiskTrain.cls](src/datalake/data/MaternalRiskTrain.cls) - a view that we will use as our training data.
+* [MaternalRiskTest.cls](src/datalake/data/MaternalRiskTest.cls) - a view that we will use as our test data for validation.
+
+Go to [Management Portal > Explorer > SQL > DATALAKE](http://localhost:52773/csp/sys/exp/%25CSP.UI.Portal.SQL.Home.zen?$NAMESPACE=DATALAKE) and run the following:
+
+Create a model for predicting the `RiskLevel` column based on your training data:
+
+```sql
+CREATE MODEL MaternalModel PREDICTING (RiskLevel) FROM datalake_data.MaternalRiskTrain
+```
+
+Train your model using your training data:
+
+```sql
+TRAIN MODEL MaternalModel
+```
+
+Now, validate your model using your test data:
+
+```sql
+VALIDATE MODEL MaternalModel FROM datalake_data.MaternalRiskTest
+```
+
+You can check the validation metrics for your model:
+
+```sql
+SELECT * FROM INFORMATION_SCHEMA.ML_VALIDATION_METRICS
+```
+
+And finally, you can use your model to get predictions:
+
+```sql
+SELECT *, PREDICT(MaternalModel) AS PredictedRisk FROM datalake_data.MaternalRiskTest
+```
