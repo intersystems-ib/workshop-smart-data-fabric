@@ -40,6 +40,8 @@ XData Cube [ XMLNamespace = "http://www.intersystems.com/deepsee" ]
   </dimension>
   <measure name="AvgValueNM" disabled="false" sourceProperty="ValueNM" aggregate="AVG" type="number" hidden="false" searchable="false" factNumber="1">
   </measure>
+  <listing name="Listing" disabled="false" listingType="table" fieldList="%ID,Code,Identifier,Patient-&gt;%ID,Patient-&gt;AdministrativeSex,Patient-&gt;Age,Patient-&gt;BirthDate,Patient-&gt;FirstName,Patient-&gt;Identifier,Patient-&gt;FirstName,Patient-&gt;LastName,Status,TimeStamp,Units,ValueNM,ValueST">
+  </listing>
 </cube>
 }
 

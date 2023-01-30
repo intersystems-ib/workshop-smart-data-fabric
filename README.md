@@ -318,5 +318,38 @@ Let's call the Telegram business operation from the REST service:
 * In the method, we will call interoperability components. For that you need to start your call instatiating a Business Service that will init the interoperability context.
 * We will instantiate [TelegramFromService](datalake.connectors.interop.bs.TelegramFromService) business service. It will simply send a message to our Telegram business operation.
 
+# Analytics
+There multiple ways in which you can leverage [analytics & data science](https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=PAGE_data_science) using InterSystems IRIS:
+- IRIS Business Intelligence - Allows you to embed business intelligence into your applications. You can have a first look at it in [workshop-iris-bi-intro](https://github.com/intersystems-ib/workshop-iris-bi-intro)
+- Adaptive Analytics - an optional extension that provides a business-oriented, virtual data model layer between InterSystems IRIS and popular Business Intelligence (BI) and Artificial Intelligence (AI) client tools. You can checkout this Spanish Webinar [Self-Service Analytics y Reporting](https://comunidadintersystems.com/webinar-self-service-analytics-y-reporting).
 
+We will focus on IRIS BI on our first example.
+
+## BI. Defining a Cube
+Open [Management Portal > Analytics > Datalake > Architect > Open Observations Cube](http://localhost:52773/csp/datalake/_DeepSee.UI.Architect.zen?$NAMESPACE=DATALAKE&CUBE=ObxCube.cube) and go through the different dimensions and measures defined for a cube based on the observations persistent class.
+
+These dimensions and measures define what kind of analysis can be done using this cube.
+
+<img src="img/bi-architect.png" width="1024" />
+
+## BI. Analyzer
+Then, open [Management Portal > Analytics > Datalake > Analyzer > Open Observations Cube](http://localhost:52773/csp/datalake/_DeepSee.UI.Analyzer.zen?$NAMESPACE=DATALAKE&$NAMESPACE=DATALAKE&) and try different combinations for rows & columns on your analysis pivot table.
+
+You can also open a pre-defined pivot. In your VS Code Import & Compile [AvgObservationsByAge.pivot.dfi](src/datalake/AvgObservationsByAge.pivot.dfi).
+<img src="img/bi-analyzer.gif" width="1024" />
+
+## BI. User portal
+Finally, you can create dashboards and build widgets based on your analysis pivot tables. In your VS code Import & Compile [AvgObservationsByCode.dashboard.dfi](src/datalake/AvgObservationsByCode.dashboard.dfi).
+
+Then, open [Management Portal > Analytics > Datalake > User Portal > Open Avg Values by Sex, Age Dashboard](http://localhost:52773/csp/datalake/_DeepSee.UserPortal.Home.zen)
+
+<img src="img/bi-user-portal.gif" width="1024" />
+
+
+## BI. DSW
+In [Open Exchange](https://openexchange.intersystems.com) you can find awesome applicatiosn like [DSW](https://openexchange.intersystems.com/package/DeepSeeWeb) that enables a whole new great looking UI for your IRIS BI. 
+
+You can checkout in your example accessing http://localhost:52773/dsw/index.html#/DATALAKE 
+
+<img src="img/bi-dsw.gif" width="1024" />
 
