@@ -22,4 +22,8 @@ local/*
 # generated hl7 files
 data/hl7files/*.hl7
 
+# jupyter: ignore all but ipynb
+jupyter/notebooks/*
+!jupyter/notebooks/*.ipynb
+
 LOCAL.md

@@ -416,3 +416,16 @@ And finally, you can use your model to get predictions:
 ```sql
 SELECT *, PREDICT(MaternalModel) AS PredictedRisk FROM datalake_data.MaternalRiskTest
 ```
+
+
+## Jupyter Notebooks
+In [docker-compose.yml](docker-compose.yml) has been added a jupyter notebook service so we can connect to IRIS using [IRIS Native SDK for Python](https://docs.intersystems.com/irisforhealth20222/csp/docbook/DocBook.UI.Page.cls?KEY=BPYNAT).
+
+Try the following:
+* Open your Jupyter Notebook instance in http://localhost:8888
+* Open [IRISPython.ipynb](jupyter/notebooks/IRISPython.ipynb)
+
+Try it! Think about all the available Python ML libraries you could use to analyze your IRIS data from a pure Python context. You can run queries or directly call your IRIS objects methods.
+
+<img src="img/jupyter-iris-native-python.gif" width="1024" />
+

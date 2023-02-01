@@ -1,6 +1,7 @@
 version: '3.7'
 
 services:
+
   iris:
     init: true
     hostname: iris
@@ -14,6 +15,18 @@ services:
     - "1972:1972"
     volumes:
     - .:/app
+
+  jupyter:
+    container_name: jupyter
+    build:
+      context: jupyter
+    ports: 
+      - "8888:8888"
+    environment: 
+      - JUPYTER_ENABLE_LAB=yes
+    volumes: 
+      - ./jupyter/notebooks:/home/jovyan/
+    command: "start-notebook.sh --NotebookApp.token='' --NotebookApp.password=''"  
 
 networks:
   datapipe-network:
