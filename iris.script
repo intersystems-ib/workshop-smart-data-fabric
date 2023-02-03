@@ -45,6 +45,9 @@
     // install dsw
     zpm "install dsw"
 
+    // install csvgen
+    zpm "install csvgen"
+
     // load & compile source code
     set sc = $SYSTEM.OBJ.LoadDir("/opt/irisapp/src", "ck", .errorlog, 1)
 

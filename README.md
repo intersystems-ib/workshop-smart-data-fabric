@@ -429,3 +429,20 @@ Try it! Think about all the available Python ML libraries you could use to analy
 
 <img src="img/jupyter-iris-native-python.gif" width="1024" />
 
+
+# Appendix. Generating data
+During the workshop you have been working with already created HL7 files inspired on [Maternal Health Risk Data](https://www.kaggle.com/datasets/csafrit2/maternal-health-risk-data) dataset from Kaggle.
+
+Here is how these HL7 files have been created:
+
+Load train data into a temporary table in IRIS:
+```objectscript
+do ##class(community.csvgen).Generate("/app/data/maternalRisk/maternal_health_risk.csv",",","temp.MaternalHealthRisk")
+```
+
+Then use a simple tool to generate HL7 files:
+```objectscript
+do ##class(datalake.tools.HL7Generator).GenerateFilesHL7()
+```
+
+Your files will be generated in `data/maternalRisk/hl7gen`.
