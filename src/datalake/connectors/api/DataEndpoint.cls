@@ -1,6 +1,8 @@
 Class datalake.connectors.api.DataEndpoint Extends %CSP.REST
 {
 
+Parameter HandleCorsRequest As %Integer = 1;
+
 XData UrlMap
 {
 <Routes>
@@ -22,6 +24,22 @@ ClassMethod OnPreDispatch(pUrl As %String, pMethod As %String, ByRef pContinue A
 {
     set %response.ContentType = "application/json"
     Quit $$$OK
+}
+
+/// This is the CORS request handler. User should override this method.
+ClassMethod OnHandleCorsRequest(url As %String) As %Status
+{
+	set url = %request.GetCgiEnv("HTTP_REFERER")
+    set origin = $p(url,"/",1,3) // origin = "http(s)://origin.com:port"
+
+    // here you can check specific origins
+    // otherway, it will allow all origins (useful while developing only)
+
+	do %response.SetHeader("Access-Control-Allow-Credentials","true")
+	do %response.SetHeader("Access-Control-Allow-Methods","GET,POST,PUT,DELETE,OPTIONS")
+	do %response.SetHeader("Access-Control-Allow-Origin",origin)
+	do %response.SetHeader("Access-Control-Allow-Headers","Access-Control-Allow-Origin, Origin, X-Requested-With, Content-Type, Accept, Authorization, Cache-Control")
+	quit $$$OK
 }
 
 /// Return patients and implement a simple pagination
