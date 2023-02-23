@@ -3,28 +3,13 @@
     set $namespace = "%SYS"
     do ##class(Security.Users).UnExpireUserPasswords("*")
 
-    // --- datapipe
-    // install RESTForms2 (datapipe requirement)
-    do $SYSTEM.OBJ.Load("/tmp/RESTForms2-master/src/Form/Installer.cls", "ck")
-    set vars("Namespace")="DATALAKE"
-    set vars("CreateNamespace")="yes"
-    set vars("DataDBPath")="/opt/irisapp/db/DATALAKE-DATA"
-    set vars("CodeDBPath")="/opt/irisapp/db/DATALAKE-CODE"
-    set vars("WebApp")="/dpipe/api/rf2"
-    set vars("SourcePath")="/tmp/RESTForms2-master/src/"
-    set sc = ##class(Form.Installer).Run(.vars)
-    set $namespace = "DATALAKE"
-    // install datapipe 
-    kill vars
-    do $SYSTEM.OBJ.Load("/tmp/iris-datapipe-master/src/DataPipe/Installer.cls", "ck")
-    set vars("Namespace")="DATALAKE"
-    set vars("WebApp")="/dpipe/api"
-    set vars("SourcePath")="/tmp/iris-datapipe-master/src"
-    set vars("StartTestProduction")="no"
-    set sc = ##class(DataPipe.Installer).Run(.vars)
-
+    // create namespace
+    do $SYSTEM.OBJ.Load("/opt/irisapp/Installer.cls", "ck") 
     
-    // --- datalake
+    set vars("Namespace")="DATALAKE" 
+    set vars("DataDBPath")="/opt/irisapp/db/DATALAKE-DATA" 
+    set vars("CodeDBPath")="/opt/irisapp/db/DATALAKE-CODE"
+    do ##class(App.Installer).CreateNamespace(.vars)
 
     // import web applications
     set $namespace = "%SYS"
@@ -39,6 +24,12 @@
     // enable analytics
     do EnableDeepSee^%SYS.cspServer("/csp/datalake/",1)
 
+    // install datapipe
+    zpm "install iris-datapipe"
+
+    // modify restforms2 abstract: convert to UTF8 and HandleCorsRequest (useful for dev environment)
+    do $system.OBJ.Load("/opt/irisapp/src/Form/REST/Abstract.cls", "ck") 
+    
     // install webterminal using zpm
     zpm "install webterminal"
 
