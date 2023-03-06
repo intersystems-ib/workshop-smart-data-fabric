@@ -334,7 +334,9 @@ You can use InterSystems IRIS For Health to to create an architecture that acts 
 
 You can find more information in [FHIR Facade Architecture Overview](https://learning.intersystems.com/course/view.php?id=2137).
 
-Let's say that you want to implement an architecture that enables FHIR for our classes in `datalake.data.*` package. Let's implement a FHIR Facade:
+Let's say that you want to implement an architecture that enables FHIR for our classes in `datalake.data.*` package. 
+
+You will now implement a FHIR Facade.
 
 ## Create a FHIR Server
 You will now create a FHIR Server and use your own InteractionsStrategy that implements a FHIR Facade on top of your `datalake.data.*` package:
