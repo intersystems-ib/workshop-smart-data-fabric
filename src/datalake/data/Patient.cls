@@ -1,4 +1,4 @@
-Class datalake.data.Patient Extends (%Persistent, %JSON.Adaptor)
+Class datalake.data.Patient Extends (%Persistent, %JSON.Adaptor, datalake.fhirserver.FHIRFacade)
 {
 
 Property Id As %String(%JSONINCLUDE = "OUTPUTONLY") [ Calculated ];
@@ -54,6 +54,86 @@ ClassMethod GetByIdentifier(identifier As %String, Output obj As Patient) As %St
 		set ret = ex.AsStatus()
 	}
 	quit ret
+}
+
+/// Transform FHIR Facade to FHIR Resource
+Method FacadeToResource() As %DynamicObject
+{
+	set resource = {
+		"resourceType": "Patient",
+		"id": (..Id),
+		"identifier": [
+			{
+				"use": "usual",
+				"value": (..Identifier),
+				"assigner": {
+        			"display": "DATALAKE"
+      			}
+			}
+		],
+		"active": true,
+		"name": [
+			{
+				"use": "usual",
+				"family": (..LastName),
+				"given": [
+					(..FirstName)
+				]
+			}
+		],
+		"gender": ($case(..AdministrativeSex, "M":"male", "F": "female", "":"unknown"))
+	}
+	if ..BirthDate'="" {
+		set resource.birthDate = $zdate(..BirthDate, 3)
+	}
+	return resource
+}
+
+/// FHIR Facade Search implementation
+ClassMethod FacadeSearch(pResourceType As %String, pCompartment As %String, pCompartmentId As %String, pParameters As HS.FHIRServer.API.Data.QueryParameters = "", ByRef pSortKeys = "") As HS.FHIRServer.Util.SearchResult
+{
+	#dim tResultSet as HS.FHIRServer.Util.SearchResult = ##class(HS.FHIRServer.Util.SearchResult).Create()
+
+    set sqlWhere = ""
+    set sqlWhereAnd = ""
+
+	// retrieve parameters
+    set gender = pParameters.GetOneParameterValue("gender", .genderMod)
+    
+	// process parameters
+    set args = 0
+    if gender'="" {
+        set args($i(args)) = $case(gender, "male":"M", "female":"F", :"")
+        set sqlWhereAnd = sqlWhereAnd_$lb("AdministrativeSex=?")
+    }
+
+	// build sql
+	set sql = "select Id from datalake_data.Patient"
+
+	if $listlength(sqlWhereAnd)>0 {
+		set sqlWhere = $listtostring(sqlWhereAnd, " AND ")
+	}
+	if sqlWhere'="" {
+		set sql = sql_" WHERE "_sqlWhere
+	}
+
+	$$$FSLogSQL(sql)
+
+	// execute sql
+	set statement = ##class(%SQL.Statement).%New()
+	$$$ThrowOnError(statement.%Prepare(sql))
+	set rs = statement.%Execute(args...)
+
+	// process resultset
+	while rs.%Next() {
+		set id = rs.%Get("ID")
+		set obj = ##class(datalake.data.Patient).%OpenId(id)
+		set resource = obj.FacadeToResource()
+		do tResultSet.AddRow("", resource.resourceType,  "", "", "match",, resource.%ToJSON())
+	}
+    
+    do tResultSet.%SetIterator(0)
+    return tResultSet
 }
 
 Storage Default

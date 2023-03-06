@@ -7,6 +7,108 @@
 	},
 	"item": [
 		{
+			"name": "FHIR",
+			"item": [
+				{
+					"name": "metadata",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/metadata",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Patient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Patient/1",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Patient",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Observation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Observation/1",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Observation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Patient",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Patients. Female. Paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Patient?gender=female&_count=3",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "_count",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
 			"name": "Get All Patients",
 			"request": {
 				"method": "GET",
@@ -132,6 +234,27 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "Get Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52773/datalake/api/summary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"datalake",
+						"api",
+						"summary"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"auth": {
@@ -167,6 +290,13 @@
 					""
 				]
 			}
+		}
+	],
+	"variable": [
+		{
+			"key": "fhirendpoint",
+			"value": "http://localhost:52773/csp/healthshare/datalake/fhir/r4",
+			"type": "string"
 		}
 	]
 }

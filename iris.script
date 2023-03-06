@@ -18,6 +18,10 @@
 
     // load default SSL config for HTTPS
     write ##class(Security.SSLConfigs).Import("/opt/irisapp/install/ssl.xml")
+
+    // enable FHIR in namespace
+    set $namespace = "HSLIB"
+    do ##class(HS.HC.Util.Installer).InstallFoundation("DATALAKE")
     
     set $namespace = "DATALAKE"
 

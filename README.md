@@ -324,6 +324,42 @@ Let's call the Telegram business operation from the REST service:
 * In the method, we will call interoperability components. For that you need to start your call instatiating a Business Service that will init the interoperability context.
 * We will instantiate [TelegramFromService](datalake.connectors.interop.bs.TelegramFromService) business service. It will simply send a message to our Telegram business operation.
 
+# Enabling FHIR using FHIR Facade Architecture
+
+HL7 FHIR (Fast Healthcare Interoperability Resources) has become the top standard for the exchange of patient data across healthcare systems.
+
+However, not all applications can be completely re-written to exchange data using the FHIR standard, and facilities may not be able to deploy a *full FHIR repository*.
+
+You can use InterSystems IRIS For Health to to create an architecture that acts as a facade for a FHIR repository, allowing you to avoid complete rework while reaping the benefits of using FHIR data in your existing applications.
+
+You can find more information in [FHIR Facade Architecture Overview](https://learning.intersystems.com/course/view.php?id=2137).
+
+Let's say that you want to implement an architecture that enables FHIR for our classes in `datalake.data.*` package. Let's implement a FHIR Facade:
+
+## Create a FHIR Server
+You will now create a FHIR Server and use your own InteractionsStrategy that implements a FHIR Facade on top of your `datalake.data.*` package:
+
+Create a FHIR server in Health > DATALAKE > FHIR Configuration > Server Configuration > Add Endpoint
+* Core FHIR package: `hl7.fhir.r4.core@4.0.1`
+* URL: `/csp/healthshare/datalake/fhir/r4`
+* Interactions Strategy Class: `datalake.fhirserver.InteractionsStrategy`
+
+Now, edit the FHIR endpoint you have just created:
+* Enable New Service Instance. This is useful in case you want to change InteractionsStrategy class during development and test the new behaviour immediately.
+
+## FHIR Facade implementation
+In this case these are the main involved classes:
+* [datalake.fhirserver.InteractionsStrategy](src/datalake/fhirserver/InteractionsStrategy.cls), [datalake.fhirserver.Interactions](src/datalake/fhirserver/Interactions.cls) and [datalake.fhirserver.RepoManager](src/datalake/fhirserver/RepoManager.cls) - these are the main classes you should implement when writing you FHIR Server Interactions strategy. You can find more information in [Customizing a FHIR Server](https://docs.intersystems.com/irisforhealthlatest/csp/docbook/DocBook.UI.Page.cls?KEY=HXFHIR_server_customize_arch).
+* [datalake.fhirserver.FHIRFacade](src/datalake/fhirserver/FHIRFacade.cls) - common class we have implemented for this example. It includes some methods that must be implemented in facade classes such as how to export your data as FHIR resource or how to perform searchs.
+* [datalake.data.Patient](src/datalake/data/Patient.cls) and [datalake.data.Observation](src/datalake/data/Observation.cls) - your data classes will now implement *FHIRFacade* methods.
+
+## Try it out
+Using the included [Postman collection](workshop-iris-datalake.postman_collection.json), try some requests that are already prepared:
+* `metadata`: retrieve your FHIR Facade Capability Statement
+* `Get Patient`: retrieve a particular patient as a FHIR resource
+* `Get Patients. Female. Paginated`: search female patients and retrieve a paginated bundle.
+
+
 # Analytics
 
 <img src="img/iris-analytics-platform.png" width="1024" />
