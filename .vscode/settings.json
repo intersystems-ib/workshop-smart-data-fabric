@@ -4,7 +4,7 @@
     },
     "objectscript.conn": {
         "active": true,
-        "ns": "DATALAKE",
+        "ns": "SDF",
         "host": "localhost",
         "port": 52773,
         "username": "superuser",

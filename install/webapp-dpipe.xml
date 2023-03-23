@@ -19,8 +19,8 @@
     <JWTRefreshTokenTimeout>900</JWTRefreshTokenTimeout>
     <LockCSPName>true</LockCSPName>
     <Name>/csp/dpipe</Name>
-    <NameSpace>DATALAKE</NameSpace>
-    <Path>/usr/irissys/csp/datalake</Path>
+    <NameSpace>SDF</NameSpace>
+    <Path>/usr/irissys/csp/sdf</Path>
     <Recurse>true</Recurse>
     <RedirectEmptyPath>false</RedirectEmptyPath>
     <Resource>%Ens_Portal</Resource>

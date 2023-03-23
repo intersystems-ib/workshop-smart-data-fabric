@@ -1,0 +1,302 @@
+{
+	"info": {
+		"_postman_id": "66ebc874-0df3-4beb-a4ac-149c84c7594e",
+		"name": "workshop-smart-data-fabric",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8116712"
+	},
+	"item": [
+		{
+			"name": "FHIR",
+			"item": [
+				{
+					"name": "metadata",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/metadata",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"metadata"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Patient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Patient/1",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Patient",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Observation",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Observation/1",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Observation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Patients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Patient",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Patients. Female. Paginated",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Patient?gender=female&_count=3",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Patient"
+							],
+							"query": [
+								{
+									"key": "gender",
+									"value": "female"
+								},
+								{
+									"key": "_count",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get All Patients",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52773/sdf/api/patient?page=2&pageSize=3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"sdf",
+						"api",
+						"patient"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "pageSize",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52773/sdf/api/patient/2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"sdf",
+						"api",
+						"patient",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Patient Observations",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52773/sdf/api/patient/2/observations",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"sdf",
+						"api",
+						"patient",
+						"2",
+						"observations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Patient",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Identifier\": \"11111\",\n    \"FirstName\": \"TestFirstName\",\n    \"LastName\": \"TestLastName\",\n    \"AdministrativeSex\": \"M\",\n    \"BirthDate\": \"1983-12-01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/sdf/api/patient",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"sdf",
+						"api",
+						"patient"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Patient",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"Identifier\": \"11112\",\n    \"FirstName\": \"TestFirstNameEdited\",\n    \"LastName\": \"TestLastName\",\n    \"AdministrativeSex\": \"M\",\n    \"BirthDate\": \"1983-12-01\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:52773/sdf/api/patient/14",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"sdf",
+						"api",
+						"patient",
+						"14"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Summary",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:52773/sdf/api/summary",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"sdf",
+						"api",
+						"summary"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "SYS",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "superuser",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "fhirendpoint",
+			"value": "http://localhost:52773/csp/healthshare/sdf/fhir/r4",
+			"type": "string"
+		}
+	]
+}
