@@ -297,7 +297,7 @@ Write down your Telegram Bot token.
 
 You can now test your Telegram Business Operation:
 
-<img src="img/telegram-bo-test.gif" width="1024" />
+<img src="img/telegram-bo-test.gif" width="1500" />
 
 ## Calling your Business operation
 
