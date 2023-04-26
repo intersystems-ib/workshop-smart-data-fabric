@@ -1,4 +1,4 @@
-Learn the main ideas involved in developing a Smart Data Fabric using InterSystems IRIS.
+Learn the foundamentals to implement an Smart Data Fabric architect using InterSystems IRIS.
 
 <img src="img/sdf.png" width="1500"/>
 
