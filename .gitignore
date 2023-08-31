@@ -10,8 +10,8 @@ iris.key
 irisdata/*
 
 # ssl certs
-ssl-cert.*
-*.pem
+#ssl-cert.*
+#*.pem
 
 # webserver
 webserver/webgateway/CSP.log

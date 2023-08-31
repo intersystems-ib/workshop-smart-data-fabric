@@ -16,6 +16,24 @@ services:
     volumes:
     - .:/app
 
+  webserver:
+    hostname: webserver
+    build:
+      context: webserver
+      dockerfile: Dockerfile
+    image: workshop-smart-data-fabric:webserver
+    container_name: webserver
+    init: true
+    depends_on:
+      - iris
+    ports:
+    - "80:80"
+    - "443:443"
+    volumes:
+    - ./webserver:/webserver
+    environment:
+    - ISC_DATA_DIRECTORY=/webserver
+
   jupyter:
     container_name: jupyter
     build:

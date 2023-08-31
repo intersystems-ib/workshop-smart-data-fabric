@@ -7,7 +7,7 @@
 	},
 	"item": [
 		{
-			"name": "FHIR",
+			"name": "FHIR (Basic)",
 			"item": [
 				{
 					"name": "metadata",
@@ -27,7 +27,7 @@
 					"response": []
 				},
 				{
-					"name": "Get Patient",
+					"name": "Get Patient (Basic)",
 					"request": {
 						"method": "GET",
 						"header": [],
@@ -105,6 +105,167 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "FHIR (OAuth2)",
+			"item": [
+				{
+					"name": "Get Patient (OAuth)",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "scope",
+									"value": "user/Patient.read",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "{{oauth-clientsecret}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{oauth-clientid}}",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "{{authserver-token-url}}?aud={{fhirendpoint}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "superuser",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Patient/1",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Patient",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Observation (OAuth)",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "scope",
+									"value": "user/Observation.read",
+									"type": "string"
+								},
+								{
+									"key": "clientSecret",
+									"value": "{{oauth-clientsecret}}",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "{{oauth-clientid}}",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "{{authserver-token-url}}?aud={{fhirendpoint}}",
+									"type": "string"
+								},
+								{
+									"key": "client_authentication",
+									"value": "header",
+									"type": "string"
+								},
+								{
+									"key": "grant_type",
+									"value": "client_credentials",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "SYS",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "superuser",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{fhirendpoint}}/Observation/1",
+							"host": [
+								"{{fhirendpoint}}"
+							],
+							"path": [
+								"Observation",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
 				}
 			]
 		},
@@ -295,7 +456,22 @@
 	"variable": [
 		{
 			"key": "fhirendpoint",
-			"value": "http://localhost:52773/csp/healthshare/sdf/fhir/r4",
+			"value": "https://webserver/iris/csp/healthshare/sdf/fhir/r4",
+			"type": "string"
+		},
+		{
+			"key": "authserver-token-url",
+			"value": "https://webserver/iris/oauth2/token",
+			"type": "string"
+		},
+		{
+			"key": "oauth-clientid",
+			"value": "A1uiapvInQg8Q9LIS1amf8E6Z_GkrEAMxeC1fQXXdZ8",
+			"type": "string"
+		},
+		{
+			"key": "oauth-clientsecret",
+			"value": "6MvvPXaug3NWbsmtLU8XJOkh_zUyQ_9LcwuXf7ScsTOsncJMarz9j3QWJ7k98cogSbwBM28K4AP_gcRACIbcgA",
 			"type": "string"
 		}
 	]

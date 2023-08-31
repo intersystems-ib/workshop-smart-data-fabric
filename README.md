@@ -341,7 +341,7 @@ You will now implement a FHIR Façade.
 ## Create a FHIR Server
 You will now create a FHIR Server and use your own InteractionsStrategy that implements a FHIR Façade on top of your `sdf.data.*` package:
 
-Create a FHIR server in Health > SDF > FHIR Configuration > Server Configuration > Add Endpoint
+Create a FHIR server in *Health > SDF > FHIR Configuration > Server Configuration > Add Endpoint*
 * Core FHIR package: `hl7.fhir.r4.core@4.0.1`
 * URL: `/csp/healthshare/sdf/fhir/r4`
 * Interactions Strategy Class: `sdf.fhirserver.InteractionsStrategy`
@@ -360,6 +360,57 @@ Using the included [Postman collection](workshop-smart-data-fabric.postman_colle
 * `metadata`: retrieve your FHIR Façade Capability Statement
 * `Get Patient`: retrieve a particular patient as a FHIR resource
 * `Get Patients. Female. Paginated`: search female patients and retrieve a paginated bundle.
+
+## Adding OAuth to your FHIR Server
+* You will use the webserver container included in the workshop, as it provides you a webserver (Apache) + WebGateway connection to IRIS using HTTPS. This is required for OAuth2.
+* You can test it by accesing the IRIS Management Portal using this URL: https://webserver/iris/csp/sys/UtilHome.csp
+* To use FHIR and OAuth2 you will use SMART On FHIR Scopes, you can find more information [here](https://hl7.org/fhir/smart-app-launch/1.0.0/scopes-and-launch-context/index.html).
+
+You can also find more information about IRIS and OAuth2 in [workshop-iris-oauth2](https://openexchange.intersystems.com/package/workshop-iris-oauth2).
+
+### Create OAuth2 Server
+IRIS will act as your OAuth Authorization server. You can create a it in *System Administration > Security > OAuth 2.0 > Server*
+
+Or you can simply type this command that will create the OAuth Authorization server for you:
+```
+zn "SDF"
+do ##class(sdf.Utils).CreateOAuth2Server()
+```
+
+### Create OAuth2 Resource Server
+Next, create the OAuth2 Resource server that will be used in your FHIR Server.
+
+Go to *System Administration > Security > OAuth 2.0 > Client > Create Server Description*
+* Issuer endpoint: `https://webserver/iris/oauth2`
+* SSL/TLS configuration: `ssl`
+* Discover and Save
+
+Go to *System Administration > Security > OAuth 2.0 > Client > Client Configurations > Create Client Configuration*:
+* Application name: `fhirserver-resserver`
+* Client name: `fhirserver oauth resource server`
+* Client type: `Resource server`
+* SSL/TLS configuration: `ssl`
+* Dynamic Registration and Save
+
+### Create OAuth2 Client configuration
+Next, add a new client (with a ClientId and a Secret) that will be used while testing your FHIR Server + OAuth from Postman.
+
+* Go to *System Administration > Security > OAuth 2.0 > Server > Client Descriptions*
+* **Important!** write down your ClientId and Secret. You will need them in Postman to try it out.
+
+<img src="img/postman-oauth-client.png" width="700" />
+ 
+
+### Update your FHIR Server to use your OAuth2 configuration
+Now, go back and edit your FHIR Server endpoint in *Health > SDF > FHIR Configuration > Server Configuration > Edit Endpoint*
+
+Update the following:
+* OAuth2 Client Name: `fhirserver-resserver`
+
+### Try it using OAuth2!
+* Open the included Postman project
+* Update `oauth-clientid` and `oauth-clientsecret` Postman variables to use your ClientID and Secret.
+* Test the included FHIR OAuth requests by first requesting a token and then sending the request.
 
 
 # Analytics
