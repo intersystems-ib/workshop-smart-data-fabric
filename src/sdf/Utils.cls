@@ -57,9 +57,9 @@ ClassMethod CreateOAuth2Server() As %Status
     set server.AllowUnsupportedScope = 1
 
     // customize auth server as needed
-    set server.AuthenticateClass = "%OAuth2.Server.Authenticate"
-    set server.ValidateUserClass = "%OAuth2.Server.Validate"
-    set server.CustomizationNamespace = "%SYS"
+    set server.AuthenticateClass = "sdf.auth.Authenticate"
+    set server.ValidateUserClass = "sdf.auth.Validate"
+    set server.CustomizationNamespace = "SDF"
     set server.CustomizationRoles = "%DB_IRISSYS,%Manager,%DB_SDF"
 
     set server.SSLConfiguration = "ssl"
