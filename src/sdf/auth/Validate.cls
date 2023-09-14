@@ -37,8 +37,17 @@ ClassMethod ValidateClient(clientId As %String, clientSecret As %String, scope A
 {
     set $namespace = "%SYS"
     set ret = ##super(clientId, clientSecret, scope, .properties, .sc)
-	
+
     set $namespace = "SDF"
+    
+    /* 
+    examples: 
+    you can here modify JWT token
+
+    // e.g. modify scope
+    do scope.SetAt("", "user/Observation.read")
+    */
+
     quit ret
 }
 
