@@ -1,4 +1,4 @@
-ARG IMAGE=intersystemsdc/irishealth-ml-community:2022.2.0.368.0-zpm
+ARG IMAGE=containers.intersystems.com/intersystems/irishealth-ml-community:2023.1.0.229.0
 FROM $IMAGE
 
 USER root
