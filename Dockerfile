@@ -22,9 +22,6 @@ COPY --chown=irisowner:irisowner src src
 COPY --chown=irisowner:irisowner install install
 COPY --chown=irisowner:irisowner Installer.cls Installer.cls
 
-# install python libraries we will use
-RUN pip3 install --target /usr/irissys/mgr/python/ pandas openpyxl
-
 # run iris.script
 RUN iris start IRIS \
     && iris session IRIS < /opt/irisapp/iris.script \

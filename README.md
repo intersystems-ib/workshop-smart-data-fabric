@@ -261,6 +261,16 @@ Finally, try your service using **Postman**. Import the [workshop-smart-data-fab
 ## Embedded Python
 Embedded Python allows you to use Python to program InterSystems IRIS applications. You can even mix ObjectScript methods and Python methods and refer to objects created in either language! And of course you could use any Python libraries on your implementation. Check the documentation section [Using Embedded Python](https://docs.intersystems.com/irisforhealth20222/csp/docbook/DocBook.UI.Page.cls?KEY=AEPYTHON) to have a full view on this topic.
 
+We will use some Python libraries we must install. First, you need to connect to container bash:
+```bash
+docker compose exec iris bash
+```
+
+Then install the libraries we will use:
+```bash
+pip3 install --target /usr/irissys/mgr/python/ pandas openpyxl
+```
+
 We are going to use Embedded Python to implement in our REST service an operation that will return an Excel file with the observations for an specific patient. We will take advantage of [openpyxl](https://openpyxl.readthedocs.io/en/stable/) Python library to create Excel files:
 * REST service will handle `/patient/:id/observations/xls` requests to return an Excel file.
 * [sdf.connectors.api.DataEndpoint](src/sdf/connectors/api/DataEndpoint.cls):`GetPatientObservationsExcel` method will run a SQL query, create a result set and convert it to Excel.
