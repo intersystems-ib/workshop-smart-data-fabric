@@ -20,7 +20,7 @@ RUN mkdir -p /opt/irisapp/db
 COPY --chown=irisowner:irisowner iris.script iris.script
 COPY --chown=irisowner:irisowner src src
 COPY --chown=irisowner:irisowner install install
-COPY --chown=irisowner:irisowner Installer.cls Installer.cls
+
 
 # run iris.script
 RUN iris start IRIS \
